@@ -61,9 +61,34 @@
 % manually specify the path to it like:
 % \documentclass[conference]{../sty/IEEEtran}
 
+% ebarsallo
+% Custom (check the validity of this customization if decided to submit this as a paper.
+% Just to be able to color hint text.
+\usepackage{color}
 
+% listings
+\usepackage{listings}
+\lstset{
+	language=Java,
+	aboveskip=3mm,
+	belowskip=3mm,
+	showstringspaces=false,
+	columns=flexible,
+	basicstyle={\small\ttfamily},
+	numberstyle=\small,
+	breaklines=true,
+	breakatwhitespace=true,
+	tabsize=3
+}
 
+% tabbles
+\usepackage{multirow}
 
+% Table label (not ALL CAPS)
+\def\tablename{Table}
+
+% SI units
+\usepackage{siunitx}
 
 % Some very useful LaTeX packages include:
 % (uncomment the ones you want to load)
@@ -118,12 +143,12 @@
 % *** GRAPHICS RELATED PACKAGES ***
 %
 \ifCLASSINFOpdf
-% \usepackage[pdftex]{graphicx}
+ \usepackage[pdftex]{graphicx}
 % declare the path(s) where your graphic files are
-% \graphicspath{{../pdf/}{../jpeg/}}
+ \graphicspath{{imgs/}}
 % and their extensions so you won't have to specify these with
 % every instance of \includegraphics
-% \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
+ \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
 \else
 % or other class option (dvipsone, dvipdf, if not using dvips). graphicx
 % will default to the driver specified in the system graphics.cfg if no
@@ -293,7 +318,7 @@
 
 % *** PDF, URL AND HYPERLINK PACKAGES ***
 %
-%\usepackage{url}
+\usepackage{url}
 % url.sty was written by Donald Arseneau. It provides better support for
 % handling and breaking URLs. url.sty is already installed on most LaTeX
 % systems. The latest version and documentation can be obtained at:
@@ -401,9 +426,7 @@
 	% creates the second title. It will be ignored for other modes.
 	\IEEEpeerreviewmaketitle
 	
-	
-	
-	\section{Introduction [2-3 pages]}
+	\section{Introduction} \label{sec:Introduction} % [2-3 pages]
 	% no \IEEEPARstart
 	%This demo file is intended to serve as a ``starter file''
 	%for IEEE conference papers produced under \LaTeX\ using
@@ -413,19 +436,37 @@
 	%I wish you the best of success.
 	
 	%\hfill mds
-	
 	%\hfill August 26, 2015
-	Test
-	\begin{itemize}
-		\item [] 1.1 What is the problem? 
-		\item [] 1.2 How has it been solved till now? 
-		\item [] 1.3 What was your main solution idea? 
-		\item [] 1.4 What are the key technical details of your solution? 
-		\item [] 1.5 How did you evaluate your solution (2-3 key results)? 
-		\item [] 1.6 A high level figure of your solution, or evaluation method 
-		\item [] 1.7 A list of contributions (3-4) that you can claim from this work. 
-	\end{itemize}
 	
+	% 1.1 What is the problem?
+    Wearable devices has increased in popularity as people are starting to use more frequently for their fitness. Typical uses include calories tracker, workout assistant or step counters. Even tough these wearable devices can measure many other healthy signals (e.g. heart rate), they are still not perceived as reliable. Specifically, the accuracy for measure the heart rate varies from device to device. This project is aimed to analyze this from the hardware and software perspective.
+    
+    Wearable devices monitor heart rate by recording the photoplethysmography (PPG) signal from the skin. A PPG signal is obtained by illuminating skin using a light-emitting diode and detecting the intensity changes in the reflected light. Hence the periodicity of the PPG signal represents the heart rate. However, PPG signals are highly contaminated by artifacts caused by movements of the subject. Such motion artifacts strongly interfere with heart rate especially in fitness applications when the PPG signal is recorded during physical exercise of the subject. The situation gets worse in the case considered in this letter when the PPG signals are recorded from wrist. Such PPG signals experience severe motion artifacts due to the loose interface between the PPG sensor and skin.
+    
+    % 1.2 How has it been solved till now?
+    Many related work proposed so far for motion artifacts analysis and reduction consider weak motion artifacts scenarios in~\cite{couceiro2014detection, kim2007adaptive, santos2012accelerometer, lee2013comparison}. In~\cite{couceiro2014detection}, multiple algorithms for improving the accuracy of heart rate monitoring are presented. In~\cite{kim2007adaptive}, the relation between the PPG signal and the accelerometer data is analyzed. In~\cite{santos2012accelerometer}, a method for long-term monitoring of vital signs tested during physical exercise is developed. The results show that the system has potential to monitor cardiac activity at moderate speed (up to 4 km/h), but with increasing speed (i.e. running) the motion artifacts dominate the PPG. In~\cite{lee2013comparison}, the accuracy of heart rate monitoring with PPG signal using different wavelength of lights (red, green and blue) is analyzed. The results show that the green light PPG has a higher accuracy and a much larger signal noise ratio. 
+    
+    % 1.3 What was your main solution idea?
+    % 1.4 What are the key technical details of your solution? 
+    Although heart rate monitoring from wrist-type PPG signals during intensive physical exercise is extremely challenging, but it is of great interest to wearable smart devices such as smartwatches. In this paper, we analyze the reliability of Motorola Moto 360 (2nd Gen.). We also compare the accuracy of heart rate monitoring between Moto 360 (2nd Gen.) and Apple Watch, which is the dominated smartwatch in the market~\cite{IDC2016WearableQ3}. We use a  medical fingertip pulse oximeter as base reference to analyze the accuracy of the  two  devices. To further study the relation between PPG signal and accelerometer data, we compare the PPG signal with acceleration on each axis using correlation coefficient.
+    
+    In addition, we analyze the reliability of Android Wear 1.0 by using a black box testing approach. Fuzz testing is a cost effective technique that can allow to test a great range program in a relative short time. Besides, by fuzz the input (either by randomly generate data or by mutate data from a previous valid input) we can stress applications and identify most of common bugs. 
+    
+    % 1.5 How did you evaluate your solution (2-3 key results)? 
+    % 1.6 A high level figure of your solution, or evaluation method 
+    % Not sure we have address this so far.
+    
+    % 1.7 A list of contributions (3-4) that you can claim from this work. 
+    This work represent some of the few initiatives that address the reliability of Android wearable devices, and its contributions are outlined below:
+    
+    \begin{enumerate}
+    \item \textbf{A correlation study between the PPG signal and body motion}. Our experiments concluded that there is an important correlation between the PPG signal and x-axis acceleration. This results could be used to improve the wearable reliability.
+    \item \textbf{A guideline to improve the accuracy of the heart rate monitor on Android Wear}. By following the concluded recommendations of our work, the accuracy of the Motorola Moto 360 (2nd Gen.) can be improved. 
+    \item \textbf{The study on the reliability of the Android Wear 1.0}. An important study of the reliability of the built-in apps included on the Motorola Moto 360 (2nd Gen.) is introduced, which could aid to improve the perceived reliability from the wearable.
+    \end{enumerate}
+    
+    This paper is organized as follows. Section II reviews concepts that are relevant to this paper. Section III-V describes the details of solution from hardware and software perspective. Conclusions and future work are described in Section VI and Section VII respectively.
+    
 	%\subsection{Subsection Heading Here}
 	%Subsection text here.
 	
@@ -527,52 +568,358 @@
 	% footnotes above bottom floats. This can be corrected via the
 	% \fnbelowfloat command of the stfloats package.
 	
-	\section{Background [2-3 pages]}
-	\begin{itemize}
-		\item [] 2.1 Provide a background of the problem, in easy-to-understand terms. This should not be tied to your
-		solution. Here you can provide some context about the problem – why it is important, where it is
-		used, etc.
-		\item [] 2.2 Give a high level view of the different approaches used to solve the problem till now. Within each
-		approach, there may be multiple papers that fall within the same approach. 
-	\end{itemize}
-		
-	\section{Design Overview [1-2 pages]}
-	\begin{itemize}
-		\item [] 3.1 High-level conceptual figure of how your solution works
-		\item [] 3.2 Workflow of how your solution works – the detailed pieces will come in the next section – you can
-		give forward pointers to the details
-		\item [] 3.3 What kinds of failures or attacks is your solution meant to handle
-		\item [] 3.4 One or two common use cases – how an end user will use your solution 
-	\end{itemize}
-	
-	\section{Solution Details [Longest single section]}
-	Here you describe the detailed techniques in your solution. For each part of the solution, put it in the
-	context of the overall system or solution – where does it fit, what is its functionality. Do not just give
-	pseudo code, but explain in words what is the design behind the technique. If there are alternate ways of
-	doing this, describe them and say why one is better than the others. If your technique expands some prior
-	technique, refer to that, and point out the addition that you have done. 
-	
-	\section{Implementation [2-3 pages]}
-	What language, IT infrastructure? What are the pragmatic trade-offs that you had to make? What is the
-	complexity of the implementation – LOC, other metrics? What are the dependencies of your
-	implementation? 
-	
-	\section{Experiments and Results [As much as you need]}
-	For each result, explain: what is the goal of the experiment, what you did, then comes the plot, then
-	interpret the plot. Try and have some comparative result, with prior work. 
+    \pagebreak
+	\section{Background} \label{sec:Background} %[2-3 pages]
+	% 2.1 Provide a background of the problem, in easy-to-understand terms. This should not be tied to your solution. Here you can provide some context about the problem – why it is important, where it is used, etc.
+	Wearable devices embedded with heart rate sensors, which are based on photoplethysmography (PPG), have become increasingly popular. More than ten companies produce these wearable devices commercially. The principle of PPG has been reviewed previously~\cite{tamura2014wearable}, and is explained briefly here. Light traveling though biological tissue can be absorbed by different substances, including pigments in the skin, bone, and arterial and venous blood. Most changes in blood flow occur mainly in the arteries and arterioles (but not in the veins). For example, arteries contain more blood volume during the systolic phase of the cardiac cycle than during the diastolic phase. PPG sensors optically detect changes in the blood flow volume (i.e., changes in the detected light intensity) in the micro-vascular bed of tissue via reflection from or transmission through the tissue. The changes in light intensity are associated with small variations in blood perfusion of the tissue and provide information on the cardiovascular system, in particular, the heart rate. Due to the simplicity of this device, wearable PPG heart rate sensors have been developed.
+    
+    The sensor system consists of a light source and a detector, with green, red and infrared (IR) light-emitting diodes (LEDs) commonly used as the light source. Blood absorbs more light than the surrounding tissue. Therefore, a reduction in the amount of blood is detected as an increase in the intensity of the detected light. The wavelength and distance between the light source and photo diode (PD) determine the penetration depth of the light. Green light is suitable for the measurement of superficial blood flow in skin. IR or near-IR wavelengths are better for measurement of deep-tissue blood flow (e.g., blood flow in muscles). However, a green LED has much greater absorptivity for both oxyhaemoglobin and deoxyhaemoglobin compared to infrared light. Therefore, the change in reflected green light is greater than that in reflected infrared light when blood pulses through the skin, resulting in a better signal-to-noise ratio for the green light source. Therefore, green-wavelength PPG devices are becoming increasingly popular due to the large intensity variations in modulation observed during the cardiac cycle for these wavelengths~\cite{lee2013comparison}.
+    
+    Typically, the wearable PPG has two modes, which are transmission and reflectance. In transmission mode, the light transmitted through the medium is detected by a PD opposite the LED source, while in reflectance mode, the PD detects light that is back-scattered or reflected from tissue, bone and/or blood vessels.The transmission mode is capable of obtaining a relatively good signal, but the measurement site may be limited. Reflectance mode eliminates the problems associated with sensor placement. Therefore, the use of reflectance mode is typical for wearable devices. However, reflection-mode PPG is affected by motion artifacts. Any movement, such as physical activity, may lead to motion artifacts that corrupt the PPG signal and limit the measurement accuracy of physiological parameters [Reference].
+    
+    In this project, we analyze the reliability of Motorola Moto 360 (2nd Gen.), which heart rate monitors follows a reflection-mode PPG. Furthermore, the PPG sensor embedded in the smartwatch is NJL5513R, which provides one red LED, one infrared LED and two green LEDs to be used for heart rate~\cite{NJL5513Rdatasheet}. Nevertheless, experiments demonstrate that Motorola Moto 306 (2nd Gen.) uses two green LEDs to monitor the users heart rate.
+    
+    % 2.2 Give a high level view of the different approaches used to solve the problem till now. Within each approach, there may be multiple papers that fall within the same approach.
+    
+    Various attempts have been made to find strategies to circumvent the motion artifacts~\cite{couceiro2014detection}. In ~\cite{kim2007adaptive}, the relation between the PPG signal and the accelerometer data is analyzed. A PPG sensor with accelerometer is placed on the forehead. The subject is then asked to shake his head in each of the axes of the accelerometer, thereby finding the corresponding correlation for all axes. In ~\cite{santos2012accelerometer}, a method for long-term monitoring of vital signs tested during physical exercise is developed. The results show that the system has potential to monitor cardiac activity at moderate speed (up to 4 km/h), but with increasing speed (i.e. running) the motion artifacts dominate the PPG. In ~\cite{lee2013comparison}, the accuracy of heart rate monitoring with PPG signal using different wavelength of lights (red, green and blue) is analyzed. The results show that the green light PPG has a higher accuracy and a much larger signal noise ratio. Therefore, the green light could be a more suitable method than red and blue light PPG for monitoring HR in normal daily life.
+    
+    A different strategy is used by Apple. In Apple watch, it attempts to measure your heart rate every 10 minutes, but will not record it when the person is in motion or his/her arm is moving~\cite{AppleHeartRate2015}. This mechanism can improve the overall accuracy of the data it collected.
 
-	\section{Discussion}
-	Here talk of things that your solution does not address straight away, but can be tweaked to handle. Point
-	out weaknesses of your solution and how you would address them
+	\section{Solution} \label{sec:Solution}
+	% Here you describe the detailed techniques in your solution. For each part of the solution, put it in the context of the overall system or solution – where does it fit, what is its functionality. Do not just give pseudo code, but explain in words what is the design behind the technique. If there are alternate ways of doing this, describe them and say why one is better than the others. If your technique expands some prior technique, refer to that, and point out the addition that you have done. 
+
+%citation needed: Motorola Moto 360 (2nd Gen) considered one of the best.
+As described in the \S 1, to analyze the reliability of wearable devices, the study is done from two different perspectives: hardware and software. On both perspectives, the target of the analysis and experiments is the Motorola Moto 360 (2nd Gen.), released on 2015 and considered one of the best android wear smart watch~\cite{BestAW2016}. Then, from the hardware perspective, the study is focused on the heart rate monitor. We analyzed the accuracy of the measures obtained from the heart rate sensor, TI AFE4404 ~\cite{AFE4404dev}, and study the factors that affects its precision. By the other hand, from the software perspective, we validate the reliability of the Android wearable by applying black box testing using fuzz techniques.
+
+The following sections describe in detail the design and implementation overtaken, and the different experiments with their respective results done from each of the perspective. 
+
+	\section{Hardware} \label{sec:Hardware}
+    
+    \subsection{Related Work} \label{subsec:HardwareRelatedWork}
+    % Existing solutions
+    In this section, we describe the related work for the analysis of the reliability of the Motorola Moto 360 (2nd Gen.). Apple Watch series 1 is a commercial smartwatch that was released in April, 2015, and dominates the wearable market~\cite{IDC2016WearableQ3}. Apple Watch also provides the feature of heart rate monitoring, and according previous studies has shown that this smartwatch has accuracy compare with other more specialized devices (e.g. Fitbit Charge HR, Polar H7 chest strap)~\cite{TomGuideHRComparison2015}. In our experiments, we compare the accuracy of heart rate monitoring between Motorola Moto 360 (2nd Gen.) and Apple watch. We also use a medical fingertip pulse oximeter (Santamedical Generation 2 SM-165) as base reference to analyze the accuracy of the two wearable devices. Santamedical SM-165 is a fingertip pulse oximeter with oximetry blood oxygen saturation monitoring feature. The precision of Santamedical g2 SM-165 is $\pm2$ BPM (Beats per Minutes)~\cite{SantamedicalSM165}. To further study the accuracy of the Motorola Moto 360 (2nd Gen.), we compared the relation between the PPG signal and the accelerometer signal on each axis. Details are described in next subsection.
+    
+	\subsection{Design and Implementation} \label{subsec:HarwareDesignImpl} % [1-3 pages]
+	% Design
+    % 3.1 High-level conceptual figure of how your solution works
+	% 3.2 Workflow of how your solution works – the detailed pieces will come in the next section – you can
+	% 3.3 What kinds of failures or attacks is your solution meant to handle
+	% 3.4 One or two common use cases – how an end user will use your solution 
+	
+    % Collecting Data
+    For the experiments, we needed the measures from the hardware sensors as frequent as possible. First, we evaluated different Android app~\cite{GooglFitness,MotoBody,HearRateOs,SensorDashBoard}. Basically, the criteria for an app selection were: (1) possibility for collecting data continuously; (2) allow to collect data from the required sensors (PPG, heart rate sensor, accelerometer, and linear acceleration). However, none of the apps satisfied the both criteria. Thus, we decided to build an Android app to fulfill the requirements.
+    
+   The app consisted on two main components: mobile and wear. The mobile app, shown on the figure~\ref{fig:mobileapp}, act as a controller, enabling to start and stop the collection of data from hardware sensors. Besides, the mobile app allows to set the sampling rate for the data collection, and export the results to a CSV file. The resultant file includes: sensor type, timestamp, sampling rate, measures from hardware sensor. By the other hand, the wear component is the service responsible to collect data from the following sensors (Android sensor type code is indicated in parenthesis):
+    \begin{itemize}
+    \item Accelerometer Sensor (1).
+    \item Linear Acceleration (10).
+    \item Heart Rate Sensor (21).
+    \item PPG signal (65545).
+    \item Heart Rate Test Sensor (65547).
+    \end{itemize}
+    
+    % Figure 1
+    \begin{figure}[h]	
+        \centering
+        % PPG Signal without acc
+        \includegraphics[scale=0.40]{mobile_app} 
+        \caption{Mobile App for continuously collecting data from hardware sensors.}
+        \label{fig:mobileapp}
+    \end{figure}
+    
+    Initially, we compare the accuracy of heart rate monitoring among the two wearable devices and the fingertip pulse oximeter when the examinee is resting. During the experiment, the wrist and arm should be kept steady. As described in section \ref{sec:Background}, the problem in measuring the heart rate is the motion artifacts. The motion artifacts distort the PPG signal. When the examinee moves, LED and PD of the PPG sensor are moved and the PD doesn’t exactly detect reflected or back scattered light. That’s why PPG signal is distorted. Therefore, we compare the accuracy of heart rate monitoring among the two wearable devices and the fingertip pulse oximeter when the examinee is in regular exercise (i.e. jogging at 5 mile/hr).
+    
+    As described in section \ref{subsec:HardwareRelatedWork}, to find the relation between the distorted PPG signal and acceleration from each axis of accelerometers, we design the experiments as bellow. First, the examinee wave the arm/wrist left and right along the x-axis respectively, and doesn’t move up and down along the z-axis. The examinee then wave the arm/wrist back and forth along the y-axis. Similarly, the examinee is not allowed to wave the arm up and down along the z-axis. Last, the examinee wave the arm/wrist up and down along the z-axis. To find the relation between the PPG signal and the accelerometer signal during the regular exercise, in the fourth experiment, the examinee is asked to wave the arm/wrist as regular walking.
+
+    
+    % Implementation
+	% What language, IT infrastructure? What are the pragmatic trade-offs that you had to make? What is the complexity of the implementation – LOC, other metrics? What are the dependencies of your implementation? 
+
+	\subsection{Experiments and Results} %[As much as you need]
+	%For each result, explain: what is the goal of the experiment, what you did, then comes the plot, then interpret the plot. Try and have some comparative result, with prior work. 
+    
+    In this section, we present the experimental results. In all the experiments, the examinee is a healthy male with 6 inch height and 170 pounds weight. 
+\\
+    
+    \textbf{Comparison Analysis}
+    
+    % Figure 1
+    \begin{figure}[h]	
+        \centering
+        % Comparison Analysis between iWatch, Moto 360, Fingerclip (Resting)
+        \includegraphics[scale=0.50]{heart_rate_apple_steady} 
+        \caption{Resting heart ratio comparison.}
+        \label{fig:HeartRateComSteady}
+    \end{figure}
+    
+    % Figure 1
+    \begin{figure}[h]	
+        \centering
+        % Comparison Analysis between iWatch, Moto 360, Fingerclip (motion)
+        \includegraphics[scale=0.50]{heart_rate_apple_move}
+        \caption{Heart rate comparison with Motions. Jogging 5 miles/hour.}
+        \label{fig:HeartRateComMove}
+    \end{figure}
+    
+    Fig.~\ref{fig:HeartRateComSteady} shows the comparison experimental results of Moto 360 (2nd Gen.), Apple Watch and the fingertip pulse oximeter when the examinee is resting. The y-axis represents the heart rate (BPM), and the x-axis represents the time (seconds). It is indicated from the plot that both Apple Watch and Motorola Moto 360 (2nd Gen.) present heart rate closed to the reading from fingertip pulse oximeter. However, we find there is a non-negligible delay time for the reading of android wearable. Fig.~\ref{fig:HeartRateComMove} shows the comparison experimental results of the Motorola Moto 360 (2nd Gen.) and Apple Watch when the examinee is jogging at 5 mile/hr. In the case of the fingertip pulse oximeter, the BPM values are not shown since the device does not output lecture on motion. Thus, the values for the heart rate readings before the exercise and after the exercise are 67 BPM and 93 BPM respectively. With this in mind, it is easy to see both Motorola and Apple smartwatches are not accurate due to the motion artifacts. However, the heart rate readings of Apple Watch are more accurate than the readings of Motorola Moto 360 (2nd Gen.).
+
+	\pagebreak
+    \textbf{Motion Artifacts Analysis}
+    
+    Fig.~\ref{fig:X_AccPPG}-~\ref{fig:Z_AccPPG} show the result of experiments of the relation between the PPG signal and moving along each axis. The upper signal is the distorted PPG signal from Motorola wearable. The next waveforms (c), (d) and (e) are the outputs of each x-axis, y-axis and z-axis accelerometers. To show the relation between PPG signal and the acceleration clearly, we used the Pearson correlation coefficient. The correlation coefficient represents interrelation between the signals. The numerical formula of correlation is as follows:    
+    
+    \begin{equation}
+    Cor(x,y)=\frac{1}{m}\frac{\sum\limits_{i=1}^{m}(x_i-\mu_x)(y_i-\mu_y)}{\sigma_x\sigma_y}
+    \end{equation}
+
+    
+where $\mu$, $\sigma$ are the mean and the standard deviation of the PPG and the acceleration on each axis. The correlation coefficients for each axis are presented in tables 1-3. The experimental results indicate that the PPG signal is much correlated with x-axis acceleration when disrupted PPG signal is delayed by 0.2s. That means the motion reflects a little delayed time and the noise which corrupts generate from x-axis acceleration. In fig.~\ref{fig:XYZ_AccPPG} and table~\ref{table:XYZ_AccPPG}, we show the results for the relation between the PPG signal and the accelerometer data on each axis when the examinee is in regular walking. Apparently, the results are consistent with what we describe earlier.
+    
+    Next, we test how much x-axis acceleration has an effect on the heart rate monitoring. In Fig. 8, we show the heart rate (rpm) on the y-axis and the time (s) on the x-axis. We show three different scenarios when x-axis acceleration are \SI[per-mode=symbol]{2}{\metre\per\second\squared}, \SI[per-mode=symbol]{4}{\metre\per\second\squared} and \SI[per-mode=symbol]{8}{\metre\per\second\squared}. The experimental results indicate that the lower the x-axis acceleration, the higher the accuracy of heart rate monitoring.
+    
+    % Figure 1
+    \begin{figure}[ht]	
+        \centering
+        % PPG Signal with acc on X-axis
+        \includegraphics[scale=0.50]{x_acc_ppg_acc_19} 
+        \caption{Plot of PPG signal with acceleration on X-axis.}
+        \label{fig:X_AccPPG}
+    \end{figure}
+    
+    \begin{table}[ht]
+	\centering
+        \caption{}
+		\label{table:X_AccPPG}
+		\begin{tabular}{ l l|r|r|r|r| }
+			\cline{3-6}
+            & & \multicolumn{4}{|c|}{Delay Time of PPG signal} \\
+            \cline{3-6}
+            	& & 0s & 0.1s & 0.2s & 0.3s  \\
+			\hline
+            \multicolumn{1}{|c|}{\multirow{3}{*}{Acceleration}} 
+            	& X axis & 0.36  & 0.47 & \textbf{0.53} & 0.44  \\
+            \cline{2-6}
+            \multicolumn{1}{|c|}{} 
+            	& Y axis & -0.02 & 0.01 & 0.04 & 0.02  \\
+            \cline{2-6}
+            \multicolumn{1}{|c|}{} 
+            	& Z axis & 0.02  & 0.01 & 0.08 & 0.06  \\
+			\hline
+		\end{tabular}
+	\end{table}
+
+    % Figure 1
+    \begin{figure}[h]	
+        \centering
+        % PPG Signal with acc on Y-axis
+        \includegraphics[scale=0.50]{y_acc_ppg_acc_17} 
+        \caption{Plot of PPG signal with acceleration on Y-axis.}
+        \label{fig:Y_AccPPG}
+    \end{figure}
+    
+    \begin{table}[ht]
+	\centering
+        \caption{}
+		\label{table:Y_AccPPG}
+		\begin{tabular}{ l l|r|r|r|r| }
+			\cline{3-6}
+            & & \multicolumn{4}{|c|}{Delay Time of PPG signal} \\
+            \cline{3-6}
+            	& & 0s & 0.1s & 0.2s & 0.3s  \\
+			\hline
+            \multicolumn{1}{|c|}{\multirow{3}{*}{Acceleration}} 
+            	& X axis & 0.09  & 0.47  & 0.32  & \textbf{0.42}  \\
+            \cline{2-6}
+            \multicolumn{1}{|c|}{} 
+            	& Y axis & 0.08  & 0.01  & -0.11 & -0.20  \\
+            \cline{2-6}
+            \multicolumn{1}{|c|}{} 
+            	& Z axis & 0.07  & -0.02 & -0.14 & -0.23  \\
+			\hline
+		\end{tabular}
+	\end{table}
+    
+    % Figure 1
+    \begin{figure}[h]	
+        \centering
+        % PPG Signal with acc on Z-axis
+        \includegraphics[scale=0.50]{z_acc_ppg_acc_12} 
+        \caption{Plot of PPG signal with acceleration on Z-axis.}
+        \label{fig:Z_AccPPG}
+    \end{figure}
+    
+    \begin{table}[ht]
+	\centering
+        \caption{}
+		\label{table:Z_AccPPG}
+		\begin{tabular}{ l l|r|r|r|r| }
+			\cline{3-6}
+            & & \multicolumn{4}{|c|}{Delay Time of PPG signal} \\
+            \cline{3-6}
+            	& & 0s & 0.1s & 0.2s & 0.3s  \\
+			\hline
+            \multicolumn{1}{|c|}{\multirow{3}{*}{Acceleration}} 
+            	& X axis & 0.08  & 0.08  & 0.08  &  0.08  \\
+            \cline{2-6}
+            \multicolumn{1}{|c|}{} 
+            	& Y axis & 0.02  & 0.01  & 0.02 & -0.01  \\
+            \cline{2-6}
+            \multicolumn{1}{|c|}{} 
+            	& Z axis & 0.06  & 0.003 & -0.07 & -0.15  \\
+			\hline
+		\end{tabular}
+	\end{table}
+    
+    % Figure 1
+    \begin{figure}[h]	
+        \centering
+        % PPG Signal with acc on XYZ-axis
+        \includegraphics[scale=0.50]{xyz_acc_ppg_acc_8} 
+        \caption{Plot of PPG signal with acceleration on all axis (X, Y, Z).}
+        \label{fig:XYZ_AccPPG}
+    \end{figure}
+    
+    \begin{table}[ht]
+	\centering
+        \caption{}
+		\label{table:XYZ_AccPPG}
+		\begin{tabular}{ l l|r|r|r|r| }
+			\cline{3-6}
+            & & \multicolumn{4}{|c|}{Delay Time of PPG signal} \\
+            \cline{3-6}
+            	& & 0s & 0.1s & 0.2s & 0.3s  \\
+			\hline
+            \multicolumn{1}{|c|}{\multirow{3}{*}{Acceleration}} 
+            	& X axis & 0.63  & 0.72  & \textbf{0.78}  &  0.77  \\
+            \cline{2-6}
+            \multicolumn{1}{|c|}{} 
+            	& Y axis & 0.48  & 0.55  & 0.59 &  0.57  \\
+            \cline{2-6}
+            \multicolumn{1}{|c|}{} 
+            	& Z axis & 0.03  & -0.05 & -0.13 & -0.12  \\
+			\hline
+		\end{tabular}
+	\end{table}
+    
+    % Figure 1
+    \begin{figure}[h]	
+        \centering
+        % Comparison Analysis between iWatch, Moto 360, Fingerclip
+        \includegraphics[scale=0.50]{heart_rate_com} 
+        \caption{Plot of PPG signal with Acceleration on X-Axis.}
+        \label{fig:HeartRateCom}
+    \end{figure}
+    
+    \section{Software} \label{sec:Software}
+    
+    \subsection{Related Work} \label{subsec:SoftwareRelatedWork}
+    % Existing solutions
+    
+    Android Wear 1.0, which comes with the Motorola Moto 360 (2nd Gen.), was released on 2014. The next version of the OS, Android Wear 2.0, was pushed back from last October to next year. Even thought, Android has the largest share in the smart phone market, with 87\%~\cite{IDC2016PhoneMarket}, that dominance has not translated to the wearable area. Still, Android Wear is considered a popular OS on wearable devices. However, as we showed on the previous section, Motorola Moto 360 (2nd Gen.) is not as accurate as Apple Watch.
+    
+   To verify the overall reliability of the Android wearable devices we devise that a fuzz testing technique will be helpful. Fuzz testing involves to randomly generating or mutating well-formed input data and test the application using this input. Fuzzing is able to identify most common errors and potential vulnerabilities quickly and cost effectively. Thus, by applying fuzzing we will be able to verify how reliable is the software on Motorola Moto 360 (2nd. Gen.)
+   
+   Initially, our solution was based on fuzz test the input data of sensors, and inject that input on the Google Fit API, to test the reliability of Fitness and Health apps. Basically, the idea is to stress the apps using a black box approach. The test could conducted either using an existing tool, or implementing a tool. At first instance, the approach was to build a partial fuzz tester, just focused on the generation of the input data, and then inject that input on the target.
+   
+   For implementing the tool, two different approach were evaluated:
+   
+   \begin{itemize}
+   \item \textbf{Use data injection mode}. Android has a data injection mode available on \texttt{SensorManager} class. Using the mode, the data collected by hardware sensors is ignored; instead, the data injected is considered by the \texttt{Sensor}. This mode should be activate through the Android Debug Bridge (ADB) tool, as shown on listing~\ref{lst:injection}. Unfortunately, this mode is not only available by third parties, but the OS.  Which means that we would need to modify the Android Wear OS to take advantage of this mode. For this reason, this option was discarded.
+   
+   \begin{lstlisting}[captionpos=b, caption={Enabling injection mode.}, label={lst:injection}, language=Java]
+adb shell dumpsys sensorservice data_injection android.sensor.accelerometer
+	\end{lstlisting}
+    
+   \item \textbf{Exploit the fact Android is based on Linux.} In Unix-like operating systems, special files that acts as interface for device driver are located on \texttt{/dev/input}. All device's input, including sensors, can be found on that directory; which means that we can interact with them using \texttt{sendevent} and \texttt{getevent} ADB's commands. This is exploited by  ~\cite{mohamed2016smashed} to read and write to different sensors. However, the test that we conducted revealed that this vulnerability or behavior is not longer present on the Android OS (neither Android Wear OS) starting the Lollipop version (5.0). Then, this approach was also discarded.
+	\end{itemize}  
+
+	Due the impossibility to find a viable way to fuzz the sensor data, we decide to use an existing tool. There are many fuzzers on Linux, but a handful tools on Android. Although there are no specialized tool for Android Wear, since the OS is based on Android, the same tools can be used on both OS. The most popular tools are Android official tools, Monker UI and Monkey Runner, which offers limited features. More advanced tools include: ~\cite{Cui2015}, ~\cite{Machiry2013}, ~\cite{Ye2013}. However, none of the tools reviewed offers the possibility to fuzz sensor data. Thus, we decided to change our initial scope to test the reliability of Android Wear software. Instead of fuzz the sensor data, we decided to apply a fuzz test to all the Android Wear built-in apps using one of the official Android test tools, Monkey UI. 
+   
+   
+    \subsection{Design and Implementation} \label{subsec:SoftwareDesignImple} %[1-3 pages]
+	% Design
+    % 3.1 High-level conceptual figure of how your solution works
+	% 3.2 Workflow of how your solution works – the detailed pieces will come in the next section – you can
+	% 3.3 What kinds of failures or attacks is your solution meant to handle
+	% 3.4 One or two common use cases – how an end user will use your solution 
+    Motorola Moto 360 (2nd Gen.) includes 45 packages, which only 14 are susceptible to be tested. Android Monkey UI can only be used to stress-test the UI (user interface) of applications. Thus, apps must have a Main Activity defined, which means that others app such as services cannot be tested. The testing tool generates pseudo random streams of user events (e.g. click, touches or gestures)~\cite{AndroidUITester}. The packages that were tested are listed on table~\ref{table:FuzzPackage}.
+    
+    \begin{table}[ht]
+	\centering
+        \caption{}
+		\label{table:FuzzPackage}
+		\begin{tabular}{ |l|l| }
+			\hline
+				App Name         & package \\
+			\hline
+				Moto Body        & com.motorola.omni \\
+				Flashlight       & com.google.android.clockwork.flashlight \\
+				Settings         & com.google.android.apps.wearable.settings \\
+				Clock            & com.google.android.deskclock \\
+				Music            & com.google.android.music \\
+				Maps             & com.google.android.apps.maps \\
+				Fitness          & com.google.android.apps.fitness \\
+				Google Services  & com.google.android.gms \\
+				Reminders        & com.google.android.wearable.reminders \\
+				Photos           & com.google.android.apps.wearable.phone \\
+				Translate        & com.google.android.apps.translate \\
+				Wearable App     & com.google.android.wearable.app \\
+				Keep             & com.google.android.keep \\
+				Talk             & com.google.android.talk \\
+			\hline
+		\end{tabular}
+	\end{table}	
+
+	The stress test consisted on running 4000 trials for each package. For the test, the developer mode on the the Motorola Moto 360 (2nd Gen.) was enabled. Besides, the debugging via bluetooth was activated. For the experiments we used the default sample distribution of Android Monkey UI, as shown in fig.~\ref{fig:FuzzEvents}. If an application crashed, the test will be repeated until complete the required 4000 trials for the package. The test were launched manually, using an script.
+    
+    % Figure 1
+    \begin{figure}[h]	
+        \centering
+        % Distribution of Fuzz Events
+        \includegraphics[scale=0.60]{fuzz_events} 
+        \caption{Distribution of Sample Events.}
+        \label{fig:FuzzEvents}
+    \end{figure}
+	
+    % Implementation
+	% What language, IT infrastructure? What are the pragmatic trade-offs that you had to make? What is the complexity of the implementation – LOC, other metrics? What are the dependencies of your implementation? 
+
+	\subsection{Experiments and Results} %[As much as you need]
+	%For each result, explain: what is the goal of the experiment, what you did, then comes the plot, then interpret the plot. Try and have some comparative result, with prior work. 
+    
+    During the experiments, we observed that the only apps that crashed were the fitness apps: Moto Body and Google Fitness. Then, we decided to extend the test and continue stressing those apps by running 10000 on each apps. As we an observe on figure~\ref{fig:FuzzTrials}, at the end of the experiment, Moto Body crashed 6 times, while the Google Fitness crashed 1 time.
+    
+	% Figure 1
+    \begin{figure}[h]	
+        \centering
+        % Fuzz test results on fitness apps
+        \includegraphics[scale=0.50]{fuzz_crashs} 
+        \caption{Crashes per trials on fitness apps.}
+        \label{fig:FuzzTrials}
+    \end{figure}
+    
+    Finally, we can conclude that fitness apps are less reliable than the rest of the apps on the Android Wear. Specifically, the Moto Body app release by Motorola is vulnerable than the Google Fitness app. All the errors reported on the Moto Body app were NullPointerException, either for attempting to read a field with null value or invoke a method using a null object reference.
+    
+	%\section{Discussion}
+	% Here talk of things that your solution does not address straight away, but can be tweaked to handle. Point out weaknesses of your solution and how you would address them
 		
-	\section{Conclusion}
-	%The conclusion goes here.
-	Summarize the main contributions of the work and what further work someone should do to make the
-	solution better. 
-	
-	
-	
-	
+	\section{Conclusion} \label{sec:Conclusion}
+	% Summarize the main contributions of the work and what further work someone should do to make the solution better. 
+	% The conclusion goes here.
+    In this project, we analyzed the reliability of wearable device from the hardware and software perspective. For hardware perspective, we compare the reliability between the Motorola Moto 360 (2nd. Gen), Apple iWatch and the Santamedical Generation 2 SM-165 Fingertip Pulse Oximeter. We showed that the accuracy between the Apple iWatch and the SM-165 Fingertip is very close. In contrast, in the Motorola Moto 360 (2nd Gen.) there is a delay time. Also, the experiments showed that there accuracy of all three device is very accurate during resting, and less accurate with motion body. The more significant of the motion body, the less of the accuracy.
+    
+    Furthermore, the PPG signal is affected body motion, and particularly from the acceleration on the X axis. Thus, the PPG signal is more correlated to the X axis acceleration than any of the other axis. The motion reflects a little delayed time (about 0.2s) on PPG signal. 
+    
+    Finally, for the software perspective, we realized fuzz testing to Motorola Moto 360 (2nd Gen.) built-in apps. From the test, we can conclude that the fitness apps are less reliable than the rest, specially the Moto Body app.
+    
+    \section{Future Work} \label{sec:FutureWork}
+    % Future work goes here.
+    In the experiment section, we showed that the heart rate monitor from the Motorola Moto 360 (2nd Gen.) is less accurate on the presence of body motion. In this sense, the accuracy can be improved by implementing an algorithm to discard untrustable data, and cancel the noise using machine learning techniques. Besides, further experiments can be done in the following areas:
+    \begin{itemize}
+    \item \textit{Rhythmic Movements}. Compare the impacts of rhythmic movements, such as running, cycling, playing tennis (or any other sport), on the heart rate monitor.
+    \item \textit{Fuss Tester}. Build a fuzz testing tool capable of fuzz sensor data (either generate the data randomly or mutate from specific patterns), and use it to check the reliability of the Google Fit API. Also, apply test using white box testing instead of a black box, as was done for this project.
+    \end{itemize}
+    
 	% conference papers do not normally have an appendix
 	
 	
@@ -601,7 +948,7 @@
 	% http://mirror.ctan.org/biblio/bibtex/contrib/doc/
 	% The IEEEtran BibTeX style support page is at:
 	% http://www.michaelshell.org/tex/ieeetran/bibtex/
-	\nocite{*}
+	% \nocite{*}
 	\bibliographystyle{IEEEtran}
 	% argument is your BibTeX string definitions and bibliography database(s)
 	\bibliography{IEEEabrv,ref}
